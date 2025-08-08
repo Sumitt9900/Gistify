@@ -159,10 +159,9 @@
         const uploadBtn = document.getElementById('upload-btn');
         const fileInput = document.getElementById('file-input');
         const formatBtns = document.querySelectorAll('.format-btn');
-        let savedRange;
 
         summarizeBtn.addEventListener('click', async () => {
-            const textToSummarize = inputText.innerText;
+            const textToSummarize = inputText.innerText; // Use innerText for contenteditable
             if (!textToSummarize.trim()) {
                 alert('Please enter some text to summarize.');
                 return;
@@ -229,16 +228,16 @@
             if (file) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    inputText.innerText = e.target.result;
+                    inputText.innerText = e.target.result; // Use innerText
                 };
                 reader.readAsText(file);
             }
         });
 
-        // --- Text Formatting Logic ---
+        // --- Text Formatting Logic (CORRECTED) ---
         formatBtns.forEach(button => {
             button.addEventListener('mousedown', (e) => {
-                e.preventDefault(); 
+                e.preventDefault(); // This is the key. It prevents the button from taking focus away from the text editor.
                 const command = e.currentTarget.dataset.command;
                 const value = e.currentTarget.dataset.value || null;
                 document.execCommand(command, false, value);
@@ -249,7 +248,7 @@
         async function getAiSummary(text) {
             const prompt = `Summarize the following text concisely:\n\n"${text}"`;
             
-            const apiKey = "AIzaSyDdFu8fL6yD91adlV38-RZZoqEl-ajwAoU"; 
+            const apiKey = "AIzaSyAFnKCqtgWk919lSzrrU-sZWiKdImKVOxo"; 
 
             let chatHistory = [];
             chatHistory.push({ role: "user", parts: [{ text: prompt }] });
