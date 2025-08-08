@@ -159,9 +159,10 @@
         const uploadBtn = document.getElementById('upload-btn');
         const fileInput = document.getElementById('file-input');
         const formatBtns = document.querySelectorAll('.format-btn');
+        let savedRange;
 
         summarizeBtn.addEventListener('click', async () => {
-            const textToSummarize = inputText.innerText; // Use innerText for contenteditable
+            const textToSummarize = inputText.innerText;
             if (!textToSummarize.trim()) {
                 alert('Please enter some text to summarize.');
                 return;
@@ -228,16 +229,16 @@
             if (file) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    inputText.innerText = e.target.result; // Use innerText
+                    inputText.innerText = e.target.result;
                 };
                 reader.readAsText(file);
             }
         });
 
-        // --- Text Formatting Logic (CORRECTED) ---
+        // --- Text Formatting Logic ---
         formatBtns.forEach(button => {
             button.addEventListener('mousedown', (e) => {
-                e.preventDefault(); // This is the key. It prevents the button from taking focus away from the text editor.
+                e.preventDefault(); 
                 const command = e.currentTarget.dataset.command;
                 const value = e.currentTarget.dataset.value || null;
                 document.execCommand(command, false, value);
@@ -248,10 +249,11 @@
         async function getAiSummary(text) {
             const prompt = `Summarize the following text concisely:\n\n"${text}"`;
             
+            const apiKey = "AIzaSyDdFu8fL6yD91adlV38-RZZoqEl-ajwAoU"; 
+
             let chatHistory = [];
             chatHistory.push({ role: "user", parts: [{ text: prompt }] });
             const payload = { contents: chatHistory };
-            const apiKey = ""; // API key is handled by the environment
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
 
             let response;
